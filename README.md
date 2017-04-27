@@ -1,3 +1,6 @@
+# View on CodePen:
+https://codepen.io/ordette/pen/zwZOGz
+
 # Pixel Art Maker
 
 In this exercise, you'll create your own pixel art maker which will allow a user to choose colors from a palette and then paint pixel art. The interface is completely up to you, but it could look something like this.
@@ -41,7 +44,7 @@ Research [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Storage
 
 ### Bonus 4
 
-Create a fill tool that will [flood fill](https://en.wikipedia.org/wiki/Flood_fill) boundaries with a chosen paint color. 
+Create a fill tool that will [flood fill](https://en.wikipedia.org/wiki/Flood_fill) boundaries with a chosen paint color.
 
 
 ### Deployment

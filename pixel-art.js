@@ -78,4 +78,5 @@ document.addEventListener("DOMContentLoaded", function() {
    canvas.addEventListener('mouseup', checkMouseUp);
 
 
+   // use local storage, JSON.stringify, and JSON.parse to put drawing into local storage
 });
