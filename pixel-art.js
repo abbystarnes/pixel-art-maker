@@ -46,15 +46,17 @@ document.addEventListener("DOMContentLoaded", function() {
    var userSelectedColor = '#000'; //default
    function watchColorPicker(event) {
       currentBrushColor.style.backgroundColor = event.target.value;
-      userSelectedColor = event.target.value;
-      //console.log(userSelectedColor);
+      console.log(userSelectedColor, 'color');
+      if (event.target.value !== undefined) {
+         userSelectedColor = event.target.value;
+      }
+      console.log(userSelectedColor, 'color');
    }
 
    // color canvas pixel
    var colorCanvasPixel = function(event) {
       this.style.backgroundColor = userSelectedColor;
    }
-
 
    // add event listener to all pixels, run change color on click
    for (let z = 0; z < canvasPixels.length; z++) {
@@ -64,12 +66,14 @@ document.addEventListener("DOMContentLoaded", function() {
    function checkMouseDown(event) {
       for (let z = 0; z < canvasPixels.length; z++) {
          canvasPixels[z].addEventListener('mouseenter', colorCanvasPixel);
+         console.log('mouse enter running');
       }
    }
 
    function checkMouseUp(event) {
       for (let q = 0; q < canvasPixels.length; q++) {
          canvasPixels[q].removeEventListener("mouseenter", colorCanvasPixel);
+         console.log('mouse enter removed');
       }
    }
 
@@ -86,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
    // identify pixels content
    // click save = convert pixel content to a string (stringify)
    // click load = revert pixel content to object, reload in DOM/html
-   console.log(canvasPixels, 'pixels');
+   //console.log(canvasPixels, 'pixels');
    //console.log(canvasPixel);
    var buttonSave = document.getElementById('save');
    var buttonLoad = document.getElementById('load');
@@ -103,15 +107,15 @@ document.addEventListener("DOMContentLoaded", function() {
       for (let x = 0; x < canvasPixels.length; x++) {
          saveString.push(canvasPixels[x].style.backgroundColor);
       }
-      console.log(saveString, 'before stringify');
+      //console.log(saveString, 'before stringify');
       saveString = JSON.stringify(saveString);
-      console.log(saveString, 'after stringify');
+      //console.log(saveString, 'after stringify');
    }
 
    function loadMyDrawing() {
       var loadString = '';
       loadString = JSON.parse(saveString);
-      console.log(loadString, 'after load');
+      //console.log(loadString, 'after load');
       for (let m = 0; m < canvasPixels.length; m++) {
          canvasPixels[m].style.backgroundColor = loadString[m];
       }
