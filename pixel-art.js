@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
    let canvas = document.getElementById('canvas');
    let palette = document.getElementById('palette');
 
-   // input my canvas size and my palette colors
-   const myPaletteColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+   // input my canvas size
    const myCanvasSize = 15;
 
    // create and append rows of pixels to canvas
@@ -30,64 +29,37 @@ document.addEventListener("DOMContentLoaded", function() {
    // get all canvas pixels from DOM
    let canvasPixels = document.getElementsByClassName('canvas-pixel');
 
-   // run create palette
-   function createPallete(paletteColors) {
-      for (let c = 0; c < paletteColors.length; c++) {
-         let paletteCell = document.createElement('div');
-         let paletteColor = paletteColors[c];
-         paletteCell.className = `palette-cell ${paletteColor}`;
-         palette.append(paletteCell);
-      }
-   }
-   // run create palette function
-   createPallete(myPaletteColors);
-
    let currentBrushColor = document.createElement('div');
-   currentBrushColor.className = `current-brush-color red`;
+   currentBrushColor.className = `current-brush-color`;
    currentBrushColor.id = 'currentBrushColor';
+   currentBrushColor.style.backgroundColor = '#000';
    palette.append(currentBrushColor);
 
    // get all palette cells
    let paletteCells = document.getElementsByClassName('palette-cell');
 
-   // make brush color & set to default
-   var brushColor = ' red';
-
-   // make current brush color indicator & set to default
-   //  var currentBrushColor = document.getElementById('currentBrushColor');
-   //  currentBrushColor.className = `current-brush-color red`;
-
-   // set brush color to new color, update current brush color indicator
-   var changeBrushColor = function(event) {
-      var newColor = this.className.split(" ")[1];
-      brushColor = ` ${newColor}`;
-      currentBrushColor.className = `current-brush-color ${newColor}`;
-   }
-
    /// watch color picker
    var colorPicker = document.getElementById('colorPicker');
    colorPicker.addEventListener("change", watchColorPicker);
 
+
+   var userSelectedColor = '#000'; //defualt
    function watchColorPicker(event) {
       console.log('color has changed');
       currentBrushColor.style.backgroundColor = event.target.value;
-   }
-
-
-   // add event listener to all palette colors, run change brush color on click
-   for (let p = 0; p < paletteCells.length; p++) {
-      paletteCells[p].addEventListener('click', changeBrushColor);
+      userSelectedColor = event.target.value;
+      console.log(userSelectedColor);
    }
 
    // color canvas pixel
    var colorCanvasPixel = function(event) {
-      this.className = `canvas-pixel ${brushColor}`;
+      this.style.backgroundColor = userSelectedColor;
    }
 
 
    // add event listener to all pixels, run change color on click
    for (let z = 0; z < canvasPixels.length; z++) {
-      canvasPixels[z].addEventListener('click', colorCanvasPixel);
+      canvasPixels[z].addEventListener('click', watchColorPicker);
    }
 
    function checkMouseDown(event) {
@@ -101,8 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
          canvasPixels[q].removeEventListener("mouseenter", colorCanvasPixel);
       }
    }
-
-
 
    canvas.addEventListener('mousedown', checkMouseDown);
    canvas.addEventListener('mouseup', checkMouseUp);
