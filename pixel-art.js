@@ -36,19 +36,18 @@ document.addEventListener("DOMContentLoaded", function() {
    palette.append(currentBrushColor);
 
    // get all palette cells
-   let paletteCells = document.getElementsByClassName('palette-cell');
+   //let paletteCells = document.getElementsByClassName('palette-cell');
 
    /// watch color picker
    var colorPicker = document.getElementById('colorPicker');
    colorPicker.addEventListener("change", watchColorPicker);
 
 
-   var userSelectedColor = '#000'; //defualt
+   var userSelectedColor = '#000'; //default
    function watchColorPicker(event) {
-      console.log('color has changed');
       currentBrushColor.style.backgroundColor = event.target.value;
       userSelectedColor = event.target.value;
-      console.log(userSelectedColor);
+      //console.log(userSelectedColor);
    }
 
    // color canvas pixel
@@ -79,4 +78,73 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
    // use local storage, JSON.stringify, and JSON.parse to put drawing into local storage
+   // Save data to sessionStorage
+
+   // drawing consists of pixels with inline background color value
+   // store all pixels in a string w/stringify
+
+   // identify pixels content
+   // click save = convert pixel content to a string (stringify)
+   // click load = revert pixel content to object, reload in DOM/html
+   console.log(canvasPixels, 'pixels');
+   //console.log(canvasPixel);
+   var buttonSave = document.getElementById('save');
+   var buttonLoad = document.getElementById('load');
+   var buttonClear = document.getElementById('clearButton');
+
+   buttonSave.addEventListener('click', saveMyDrawing);
+   buttonLoad.addEventListener('click', loadMyDrawing);
+   buttonClear.addEventListener('click', clearMyDrawing);
+
+   var saveString = [];
+
+   function saveMyDrawing() {
+      saveString = [];
+      for (let x = 0; x < canvasPixels.length; x++) {
+         saveString.push(canvasPixels[x].style.backgroundColor);
+      }
+      console.log(saveString, 'before stringify');
+      saveString = JSON.stringify(saveString);
+      console.log(saveString, 'after stringify');
+   }
+
+   function loadMyDrawing() {
+      var loadString = '';
+      loadString = JSON.parse(saveString);
+      console.log(loadString, 'after load');
+      for (let m = 0; m < canvasPixels.length; m++) {
+         canvasPixels[m].style.backgroundColor = loadString[m];
+      }
+   }
+
+   function clearMyDrawing() {
+      for (let m = 0; m < canvasPixels.length; m++) {
+         canvasPixels[m].style.backgroundColor = '#fff';
+      }
+   }
+
+
+
+   // return string to document
+
+
+
+   //session storage
+   // sessionStorage.setItem('key', 'value');
+   //
+   // // Get saved data from sessionStorage
+   // var data = sessionStorage.getItem('key');
+   //
+   // // Remove saved data from sessionStorage
+   // sessionStorage.removeItem('key');
+   //
+   // // Remove all saved data from sessionStorage
+   // sessionStorage.clear();
+
+
+   // stringify
+   //  JSON.stringify(value[, replacer[, space]])
+
+   // take string and return original types
+   // JSON.parse(text[, reviver])
 });
