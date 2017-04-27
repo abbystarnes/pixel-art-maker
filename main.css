@@ -26,6 +26,22 @@
   background-color: green;
 }
 
+.yellow {
+  background-color: yellow;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.indigo {
+  background-color: indigo;
+}
+
+.violet {
+  background-color: violet;
+}
+
 .palette-color {
   display: inline-block;
   height: 25px;

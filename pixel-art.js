@@ -22,6 +22,19 @@ document.addEventListener("DOMContentLoaded", function() {
       }
    }
 
+   let palette = document.getElementById('palette');
+
+   function createPallete(inputColors) {
+      for (let c = 0; c < inputColors.length; c++) {
+         let individualColor = document.createElement('div');
+         let eachColor = inputColors[c];
+         individualColor.className = `palette-color ${eachColor}`;
+         palette.append(individualColor);
+      }
+   }
+   var paletteColorsDefault = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+
+   createPallete(paletteColorsDefault);
    createGrid(9);
 
    // get all pixels
