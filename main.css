@@ -2,17 +2,50 @@
   box-sizing: border-box;
 }
 
-.pixel-grid {
-  border: 1px solid black;
+body{
+  margin: 0 auto;
+  margin-top: 4em;
+  text-align: center
 }
 
-.pixel {
+.canvas {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.canvas-row {
+  height: 25px;
+}
+
+.canvas-pixel {
   height: 25px;
   width: 25px;
   display: inline-block;
-  border: 2px solid black;
+  border: 1px solid #f1f1f1;
+}
+
+.palette {
+  margin-top: 1em;
+}
+
+.palette-cell {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  border: 1px solid #f1f1f1;
   padding: 1px;
 }
+
+.current-brush-color {
+  margin-left: 1em;
+  display: inline-block;
+  height: 25px;
+  width: 50px;
+  border: 1px solid #f1f1f1;
+  padding: 1px;
+}
+
+/* COLORS */
 
 .red {
   background-color: red;
@@ -40,20 +73,4 @@
 
 .violet {
   background-color: violet;
-}
-
-.palette-color {
-  display: inline-block;
-  height: 25px;
-  width: 25px;
-  border: 2px solid black;
-  padding: 1px;
-}
-
-.current-color {
-  display: inline-block;
-  height: 25px;
-  width: 50px;
-  border: 2px solid black;
-  padding: 1px;
 }

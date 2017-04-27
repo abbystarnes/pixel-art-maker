@@ -1,77 +1,111 @@
-// input: none/user clicks
-// output: grid of divs that, when clicked, changed to selected color in color palette
-
-// create grid of empty pixels
+// make sure html is loaded before running js
 document.addEventListener("DOMContentLoaded", function() {
 
-   // create grid
-   let pixelGrid = document.getElementById('pixelGrid');
+   //get canvas and palette divs from DOM
+   let canvas = document.getElementById('canvas');
+   let palette = document.getElementById('palette');
 
-   function createGrid(size) {
-      // create row
+   // input my canvas size and my palette colors
+   const myPaletteColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+   const myCanvasSize = 15;
+
+   // create and append rows of pixels to canvas
+   function createCanvas(size) {
+      // create & append canvas rows
       for (let x = 0; x < size; x++) {
-         let row = document.createElement('div');
-         row.className = 'row';
-         pixelGrid.appendChild(row);
-         // create cells
+         let canvasRow = document.createElement('div');
+         canvasRow.className = 'canvas-row';
+         canvas.appendChild(canvasRow);
+         // create & append canvas pixels
          for (let y = 0; y < size; y++) {
-            let pixel = document.createElement('div');
-            pixel.className = 'pixel';
-            row.appendChild(pixel);
+            let canvasPixel = document.createElement('div');
+            canvasPixel.className = 'canvas-pixel';
+            canvasRow.appendChild(canvasPixel);
          }
       }
    }
+   // run create canvas function
+   createCanvas(myCanvasSize);
 
-   let palette = document.getElementById('palette');
+   // get all canvas pixels from DOM
+   let canvasPixels = document.getElementsByClassName('canvas-pixel');
 
-   function createPallete(inputColors) {
-      for (let c = 0; c < inputColors.length; c++) {
-         let individualColor = document.createElement('div');
-         let eachColor = inputColors[c];
-         individualColor.className = `palette-color ${eachColor}`;
-         palette.append(individualColor);
+   // run create palette
+   function createPallete(paletteColors) {
+      for (let c = 0; c < paletteColors.length; c++) {
+         let paletteCell = document.createElement('div');
+         let paletteColor = paletteColors[c];
+         paletteCell.className = `palette-cell ${paletteColor}`;
+         palette.append(paletteCell);
       }
    }
-   var paletteColorsDefault = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+   // run create palette function
+   createPallete(myPaletteColors);
 
-   createPallete(paletteColorsDefault);
-   createGrid(9);
+   let currentBrushColor = document.createElement('div');
+   currentBrushColor.className = `current-brush-color red`;
+   currentBrushColor.id = 'currentBrushColor';
+   palette.append(currentBrushColor);
 
-   // get all pixels
-   let pixels = document.getElementsByClassName('pixel');
-   // get all palette colors
-   let paletteColors = document.getElementsByClassName('palette-color');
-   console.log(paletteColors);
-   // change color function
-   // set brush color to default
+   // get all palette cells
+   let paletteCells = document.getElementsByClassName('palette-cell');
+
+   // make brush color & set to default
    var brushColor = ' red';
 
-   // brush color indicator
-   var currentColorIndicator = document.getElementById('currentColor');
-   // set brush color to new color
+   // make current brush color indicator & set to default
+   //  var currentBrushColor = document.getElementById('currentBrushColor');
+   //  currentBrushColor.className = `current-brush-color red`;
+
+   // set brush color to new color, update current brush color indicator
    var changeBrushColor = function(event) {
       var newColor = this.className.split(" ")[1];
       brushColor = ` ${newColor}`;
-      currentColorIndicator.className = `current-color ${newColor}`;
-
-   }
-   // add event listener to all palette colors, run change color on click
-   for (let p = 0; p < paletteColors.length; p++) {
-      paletteColors[p].addEventListener('click', changeBrushColor);
-      //console.log(brushColor);
+      currentBrushColor.className = `current-brush-color ${newColor}`;
    }
 
-   var colorPixel = function(event) {
-      this.className += brushColor;
+   /// watch color picker
+   var colorPicker = document.getElementById('colorPicker');
+   colorPicker.addEventListener("change", watchColorPicker);
+
+   function watchColorPicker(event) {
+      console.log('color has changed');
+      currentBrushColor.style.backgroundColor = event.target.value;
    }
+
+
+   // add event listener to all palette colors, run change brush color on click
+   for (let p = 0; p < paletteCells.length; p++) {
+      paletteCells[p].addEventListener('click', changeBrushColor);
+   }
+
+   // color canvas pixel
+   var colorCanvasPixel = function(event) {
+      this.className = `canvas-pixel ${brushColor}`;
+   }
+
 
    // add event listener to all pixels, run change color on click
-   for (let z = 0; z < pixels.length; z++) {
-      pixels[z].addEventListener('click', colorPixel);
+   for (let z = 0; z < canvasPixels.length; z++) {
+      canvasPixels[z].addEventListener('click', colorCanvasPixel);
    }
+
+   function checkMouseDown(event) {
+      for (let z = 0; z < canvasPixels.length; z++) {
+         canvasPixels[z].addEventListener('mouseenter', colorCanvasPixel);
+      }
+   }
+
+   function checkMouseUp(event) {
+      for (let q = 0; q < canvasPixels.length; q++) {
+         canvasPixels[q].removeEventListener("mouseenter", colorCanvasPixel);
+      }
+   }
+
+
+
+   canvas.addEventListener('mousedown', checkMouseDown);
+   canvas.addEventListener('mouseup', checkMouseUp);
 
 
 });
-
-
-// if you click a color in palette, add set color equal to that color
