@@ -1,3 +1,6 @@
+//BEGIN MY CODE
+
+
 // make sure html is loaded before running js
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -46,11 +49,11 @@ document.addEventListener("DOMContentLoaded", function() {
    var userSelectedColor = '#000'; //default
    function watchColorPicker(event) {
       currentBrushColor.style.backgroundColor = event.target.value;
-      console.log(userSelectedColor, 'color');
+      //console.log(userSelectedColor, 'color');
       if (event.target.value !== undefined) {
          userSelectedColor = event.target.value;
       }
-      console.log(userSelectedColor, 'color');
+      //console.log(userSelectedColor, 'color');
    }
 
    // color canvas pixel
@@ -64,16 +67,22 @@ document.addEventListener("DOMContentLoaded", function() {
    }
 
    function checkMouseDown(event) {
+      // if (event.target.className != 'canvas-row') {
+      //    event.target.style.backgroundColor = userSelectedColor;
+      // }
       for (let z = 0; z < canvasPixels.length; z++) {
          canvasPixels[z].addEventListener('mouseenter', colorCanvasPixel);
-         console.log('mouse enter running');
+
       }
    }
 
    function checkMouseUp(event) {
+      // if (event.target.className != 'canvas-row') {
+      //    event.target.style.backgroundColor = userSelectedColor;
+      // }
       for (let q = 0; q < canvasPixels.length; q++) {
          canvasPixels[q].removeEventListener("mouseenter", colorCanvasPixel);
-         console.log('mouse enter removed');
+         //console.log('mouse enter removed');
       }
    }
 
@@ -127,28 +136,111 @@ document.addEventListener("DOMContentLoaded", function() {
       }
    }
 
+   // flood fill implementation
+
+   // if you click fill button:
+   // remove watchColor event listener from pixels
+   // add fill event listener to pixels
+   var fillButton = document.getElementById('fillButton');
+
+   function changeListener(event) {
+      // console.log(this, 'this');
+      // console.log(event.target, 'event target');
+      for (let z = 0; z < canvasPixels.length; z++) {
+         canvasPixels[z].removeEventListener('click', watchColorPicker);
+         canvasPixels[z].addEventListener('click', grandFloodFill);
+      }
+      console.log('done changing listeners');
+   }
+
+   fillButton.addEventListener('click', changeListener);
+
+   // need a way to find pixel above current pixel, beside it, beneath it, etc
+
+   // pixel above = pixel[x] - row length
+   // pixel below = pixel[x] + row length
+   // pixel left = array pixel[x] - 1
+   // pixel right = array pixel [x] + 1
+   var originalNodeColor = 'rgb(255, 255, 255)';
 
 
-   // return string to document
+   function grandFloodFill(event) {
+      //console.log('grand running');
+      originalNodeColor = this.style.backgroundColor;
+      console.log(originalNodeColor, 'original color');
+      floodFill(this);
+   }
 
+   //  Flood-fill (node, target-color, replacement-color):
+   function floodFill(node) {
+      //console.log(node, 'node');
+      //   1. If target-color is equal to replacement-color, return.
+      //  console.log(node, 'node');
+      // for (let z = 0; z < canvasPixels.length; z++) {
+      //    if (this === canvasPixels[z]) {
+      //    }
+      // }
 
+      // console.log(this.style.backgroundColor, 'pixel');
+      // console.log(currentBrushColor.style.backgroundColor, 'user');
 
-   //session storage
-   // sessionStorage.setItem('key', 'value');
-   //
-   // // Get saved data from sessionStorage
-   // var data = sessionStorage.getItem('key');
-   //
-   // // Remove saved data from sessionStorage
-   // sessionStorage.removeItem('key');
-   //
-   // // Remove all saved data from sessionStorage
-   // sessionStorage.clear();
+      ////// IMPLEMENT THESE CHECKS
+      if (node.style.backgroundColor === currentBrushColor.style.backgroundColor) {
+         console.log('already matches');
+         return;
+      } else if (node.style.backgroundColor !== originalNodeColor) {
+         console.log("it doesn't match original color");
+         return;
+      } else {
+         node.style.backgroundColor = currentBrushColor.style.backgroundColor;
 
+         for (let d = 0; d < canvasPixels.length; d++) {
+            if (canvasPixels[d] === node) {
+               console.log(canvasPixels[d], 'canvas pixel d is node');
+               floodFill(canvasPixels[d - 1]);
+               floodFill(canvasPixels[d + 1]);
+               floodFill(canvasPixels[d - 15]);
+               floodFill(canvasPixels[d + 15]);
+            }
+         }
+      }
 
-   // stringify
-   //  JSON.stringify(value[, replacer[, space]])
+      //       var tiny = tinycolor(color);
+      // var hexString=  tiny.toHexString();
+      // var hex8String=  tiny. tiny.toHex8String();
+      // and there are other similar methods
+      //
+      // tiny.toRgbString()
+      // tiny.toHslString()
+      // tiny.toHsvString()
+      // tiny.toName()
+      // tiny.getFormat()
 
-   // take string and return original types
-   // JSON.parse(text[, reviver])
+      // if (targetColor === replacementColor) {
+      //    return;
+      // }
+      // //2. If the color of node is not equal to target-color, return.
+      // else if (colorofnode !== targetColor) {
+      //    return;
+      // } else {
+      //    colorofnode = replacementColor
+      //    floodFill(pixelLeft)
+      //    floodFill(pixelRight)
+      //    floodFill(pixelUp)
+      //    floodFill(pixelDown)
+      // }
+
+      //return
+      for (let z = 0; z < canvasPixels.length; z++) {
+         canvasPixels[z].addEventListener('click', watchColorPicker);
+         canvasPixels[z].removeEventListener('click', floodFill);
+      }
+      return
+      //   3. Set the color of node to replacement-color.
+      //   4. Perform Flood-fill (one step to the south of node, target-color, replacement-color).
+      //      Perform Flood-fill (one step to the north of node, target-color, replacement-color).
+      //      Perform Flood-fill (one step to the west of node, target-color, replacement-color).
+      //      Perform Flood-fill (one step to the east of node, target-color, replacement-color).
+      //   5. Return.
+   }
 });
