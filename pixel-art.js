@@ -186,21 +186,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
       ////// IMPLEMENT THESE CHECKS
       if (node.style.backgroundColor === currentBrushColor.style.backgroundColor) {
-         console.log('already matches');
+         //console.log('already matches');
          return;
       } else if (node.style.backgroundColor !== originalNodeColor) {
-         console.log("it doesn't match original color");
+         //console.log("it doesn't match original color");
          return;
       } else {
          node.style.backgroundColor = currentBrushColor.style.backgroundColor;
 
          for (let d = 0; d < canvasPixels.length; d++) {
             if (canvasPixels[d] === node) {
-               console.log(canvasPixels[d], 'canvas pixel d is node');
-               floodFill(canvasPixels[d - 1]);
-               floodFill(canvasPixels[d + 1]);
-               floodFill(canvasPixels[d - 15]);
-               floodFill(canvasPixels[d + 15]);
+               //console.log(canvasPixels[d], 'canvas pixel d is node');
+               var leftPixel = canvasPixels[d - 1];
+               var rightPixel = canvasPixels[d + 1];
+               var upPixel = canvasPixels[d - 15];
+               var downPixel = canvasPixels[d + 15];
+
+               if (leftPixel !== undefined) {
+                  floodFill(leftPixel);
+               }
+               if (rightPixel !== undefined) {
+                  floodFill(rightPixel);
+               }
+               if (upPixel !== undefined) {
+                  floodFill(upPixel);
+               }
+               if (downPixel !== undefined) {
+                  floodFill(downPixel);
+               }
             }
          }
       }
